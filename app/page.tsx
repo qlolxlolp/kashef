@@ -5,11 +5,11 @@ import { MinimalLayout } from "@/components/minimal-layout"
 import dynamic from 'next/dynamic'
 
 // Dynamically import components that use browser APIs
-const NetworkScanner = dynamic(() => import("@/components/network-scanner").then(mod => mod.default), { ssr: false })
-const MinerDetector = dynamic(() => import("@/components/miner-detector").then(mod => mod.default), { ssr: false })
-const NetworkMap = dynamic(() => import("@/components/network-map").then(mod => mod.default), { ssr: false })
-const ReportGenerator = dynamic(() => import("@/components/report-generator").then(mod => mod.default), { ssr: false })
-const LocationTracker = dynamic(() => import("@/components/location-tracker").then(mod => mod.default), { ssr: false })
+const NetworkScanner = dynamic(() => import("@/components/network-scanner"), { ssr: false })
+const MinerDetector = dynamic(() => import("@/components/miner-detector"), { ssr: false })
+const NetworkMap = dynamic(() => import("@/components/network-map"), { ssr: false })
+const ReportGenerator = dynamic(() => import("@/components/report-generator"), { ssr: false })
+const LocationTracker = dynamic(() => import("@/components/location-tracker"), { ssr: false })
 
 import { scanNetwork } from "@/lib/network-utils"
 import { Wifi, AlertTriangle, Activity, BarChart2, Search, RefreshCw } from "lucide-react"
