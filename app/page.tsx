@@ -1,22 +1,31 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { MinimalLayout } from "@/components/minimal-layout"
-import { NetworkScanner } from "@/components/network-scanner"
-import { MinerDetector } from "@/components/miner-detector"
-import { NetworkMap } from "@/components/network-map"
-import { ReportGenerator } from "@/components/report-generator"
-import { LocationTracker } from "@/components/location-tracker"
+import dynamic from 'next/dynamic'
+
+// Dynamically import components that use browser APIs
+const NetworkScanner = dynamic(() => import("@/components/network-scanner").then(mod => mod.default), { ssr: false })
+const MinerDetector = dynamic(() => import("@/components/miner-detector").then(mod => mod.default), { ssr: false })
+const NetworkMap = dynamic(() => import("@/components/network-map").then(mod => mod.default), { ssr: false })
+const ReportGenerator = dynamic(() => import("@/components/report-generator").then(mod => mod.default), { ssr: false })
+const LocationTracker = dynamic(() => import("@/components/location-tracker").then(mod => mod.default), { ssr: false })
+
 import { scanNetwork } from "@/lib/network-utils"
 import { Wifi, AlertTriangle, Activity, BarChart2, Search, RefreshCw } from "lucide-react"
 
 export default function Dashboard() {
+  const [mounted, setMounted] = useState(false)
   const [networkRange, setNetworkRange] = useState("192.168.1.0/24")
   const [isScanning, setIsScanning] = useState(false)
   const [devices, setDevices] = useState([])
   const [miners, setMiners] = useState([])
   const [selectedDevice, setSelectedDevice] = useState(null)
   const [activeTab, setActiveTab] = useState("scanner")
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleScan = async () => {
     setIsScanning(true)
@@ -29,6 +38,10 @@ export default function Dashboard() {
     } finally {
       setIsScanning(false)
     }
+  }
+
+  if (!mounted) {
+    return null
   }
 
   return (
@@ -197,4 +210,3 @@ export default function Dashboard() {
     </MinimalLayout>
   )
 }
-
